@@ -110,6 +110,10 @@ void sessionSt(NodeS *root, NodeCourse *rootC) {
         switch (i)
         {
         case 1:
+            if(st.status == 0) {
+                printf("Not registered classId\n");
+                continue;
+            }
             printf("Enter day: ");
             scanf("%s",wd);
             strLwr(wd);

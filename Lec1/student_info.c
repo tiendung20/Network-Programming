@@ -61,7 +61,7 @@ void readStudent(NodeS **root) {
     while(!feof(fp)) {
         fscanf(fp,"%s %s\n",st.studentId,st.classId[0]);
         st.classNum = 1;
-        st.status = 0;
+        st.status = 1;
         insertStudent(root,st,1);
     }
     fclose(fp);
@@ -72,6 +72,7 @@ void readStudent(NodeS **root) {
     }
     while(!feof(fp)) {
         fscanf(fp,"%s %s\n",st.studentId,st.password);
+        st.status = 0;
         insertStudent(root,st,2);
     }
     fclose(fp);
