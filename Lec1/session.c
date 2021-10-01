@@ -41,6 +41,7 @@ void printWD(Student st,NodeCourse *root,int day) {
     char *week_day[] = {"Monday","Tuesday","Wednesday","Thursday","Friday"};
     if(day > 6) {
         printf("%-5s |%-15s |%-15s |%-15s |%-15s |%-15s\n","",week_day[0],week_day[1],week_day[2],week_day[3],week_day[4]);
+        printf("\n");
         for(i = 0; i < 12; i++) {
             printf("%-5d ",i+1);
             for(j=0; j<5; j++) {
@@ -75,6 +76,7 @@ void printWD(Student st,NodeCourse *root,int day) {
     }
     char *apm[] = {"Morning","Afternoon"};
     printf("%-10s |%-25s |%-15s |%-15s |%-11s |%-25s |%-10s\n","Code","Course","Week Day","AM/PM","Period","Week","Room");
+    printf("\n");
     for(i = 0; i<st.classNum; i++) {
         str = root;
         while(str != NULL) {
