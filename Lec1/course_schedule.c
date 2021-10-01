@@ -65,11 +65,3 @@ void readCourse(NodeCourse **root) {
     }
     fclose(fp);
 }
-
-void printS(NodeCourse *root) {
-    NodeCourse *str = root;
-    while(str != NULL) {
-        printf("%s %s %s %s %s %d %d %d %d\n",str->data.classId,str->data.subjectId,str->data.subjectName,str->data.week,str->data.roomId,str->data.start,str->data.end,str->data.apm,str->data.week_day);
-        str = str->next;
-    }
-}

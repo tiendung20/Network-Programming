@@ -1,3 +1,5 @@
+#ifndef _courseschedule_h_
+#define _courseschedule_h_
 typedef struct course_schedule
 {
     char classId[10],subjectId[10],subjectName[25],week[20],roomId[10];
@@ -10,5 +12,6 @@ struct nodeCourse
     struct nodeCourse *next;
 };
 typedef struct nodeCourse NodeCourse;
+
 extern void readCourse(NodeCourse**);
-extern void printS(NodeCourse*);
+#endif
