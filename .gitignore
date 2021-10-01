@@ -5,4 +5,4 @@ read
 readfile.c
 test
 test.c
-.gitignore
+.vscode

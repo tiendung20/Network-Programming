@@ -77,6 +77,7 @@ void readStudent(NodeS **root) {
         st.status = 0;
         insertStudent(root,st,1);
     }
+    fclose(fp);
     fp = fopen("./data/User-account.txt","r");
     if(fp == NULL) {
         printf("Error: User-account.txt\n");
@@ -86,6 +87,7 @@ void readStudent(NodeS **root) {
         fscanf(fp,"%s %s\n",st.studentId,st.password);
         insertStudent(root,st,2);
     }
+    fclose(fp);
 }
 
 void print(NodeS *root) {
