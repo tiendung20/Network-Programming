@@ -5,4 +5,4 @@ main.o: main.c
 course_schedule.o: course_schedule.c
 	gcc -c -Wall course_schedule.c
 clean:
-	rm -f *.o *~
+	rm -f *.o *main
