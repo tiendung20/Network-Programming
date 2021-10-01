@@ -14,5 +14,5 @@ struct ListStudent
 };
 typedef struct ListStudent NodeS;
 
-extern void readStudent(NodeS**);
+extern void readStudent(NodeS**,int*);
 #endif

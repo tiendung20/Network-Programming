@@ -51,10 +51,11 @@ void insertStudent(NodeS **root, Student data, int readCheck) {
     }
 }
 
-void readStudent(NodeS **root) {
+void readStudent(NodeS **root, int *check) {
     FILE *fp = fopen("./data/student_registration.txt","r");
     if(fp == NULL) {
         printf("Error: student_registration.txt\n");
+        *check = 1;
         return;
     }
     Student st;

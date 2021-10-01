@@ -34,10 +34,11 @@ void insertCourse(NodeCourse **root, Course_schedule data) {
     }
 }
 
-void readCourse(NodeCourse **root) {
+void readCourse(NodeCourse **root,int *check) {
     FILE *fp = fopen("./data/course_schedule.txt","r");
     if(fp == NULL) {
         printf("Error: course_schedule.txt\n");
+        *check = 1;
         return;
     }
     Course_schedule cs;

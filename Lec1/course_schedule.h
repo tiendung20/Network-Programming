@@ -13,5 +13,5 @@ struct nodeCourse
 };
 typedef struct nodeCourse NodeCourse;
 
-extern void readCourse(NodeCourse**);
+extern void readCourse(NodeCourse**,int*);
 #endif
