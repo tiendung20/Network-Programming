@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "course_schedule.h"
 
 typedef struct Student
 {
@@ -106,7 +107,10 @@ void print(NodeS *root) {
 
 int main(int argc, char *argv[]) {
     NodeS *root = NULL;
+    NodeCourse *rootC = NULL;
     readStudent(&root);
     print(root);
+    readCourse(&rootC);
+    printS(rootC);
     return 0;
 }
