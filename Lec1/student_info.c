@@ -34,8 +34,8 @@ void insertStudent(NodeS **root, Student data, int readCheck) {
                     if(strcmp(temp->data.classId[i],data.classId[0]) == 0) c = -1;
                 }
                 if(c != (-1)) {
-                    strcpy(temp->data.classId[temp->data.classNum-1],data.classId[0]);
                     temp->data.classNum++;
+                    strcpy(temp->data.classId[temp->data.classNum-1],data.classId[0]);
                 }
             }
             else if(readCheck == 2) {

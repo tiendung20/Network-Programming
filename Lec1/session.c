@@ -98,11 +98,40 @@ void strLwr(char s[]) {
     }
 }
 
+int sameSchedule(Student st, NodeCourse *root) {
+    int i,j;
+    NodeCourse *ptr,*str;
+    if(st.classNum < 2) return 0;
+    for(i=0; i<st.classNum; i++) {
+        ptr = root;
+        while(ptr != NULL) {
+            if(strcmp(st.classId[i],ptr->data.classId) == 0) break;
+            ptr = ptr->next;
+        }
+        for(j=i+1; j<st.classNum; j++) {
+            str = root;
+            while(str != NULL) {
+                if(strcmp(st.classId[j],str->data.classId) == 0) break;
+                str = str->next;
+            }
+            if(ptr->data.week_day == str->data.week_day) {
+                if(ptr->data.apm == str->data.apm) {
+                    if((ptr->data.start <= str->data.end && ptr->data.end >= str->data.start) || (str->data.start <= ptr->data.end && str->data.end >= ptr->data.start)) {
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
+
 void sessionSt(NodeS *root, NodeCourse *rootC) {
-    int c,i,k;
+    int c,i,k,t;
     char wd[15],*week_day[] = {"monday","tuesday","wednesday","thursday","friday","all"};
     Student st;
     signIn(root,&st);
+    t = sameSchedule(st,rootC);
     do{
         printf("-----Account: %s-----\n",st.studentId);
         printf("1.Read week day\n2.Logout\n3.Exit\nChoose: ");
@@ -112,6 +141,9 @@ void sessionSt(NodeS *root, NodeCourse *rootC) {
         case 1:
             if(st.status == 0) {
                 printf("Not registered classId\n");
+                continue;
+            } else if(t == 1) {
+                printf("The same schedule between subjects\n");
                 continue;
             }
             printf("Enter day: ");
@@ -132,6 +164,7 @@ void sessionSt(NodeS *root, NodeCourse *rootC) {
             continue;
         case 2:
             signIn(root,&st);
+            t = sameSchedule(st,rootC);
             c = -1;
             break;
         case 3:
