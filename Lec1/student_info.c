@@ -69,6 +69,7 @@ void readStudent(NodeS **root, int *check) {
     fp = fopen("./data/User-account.txt","r");
     if(fp == NULL) {
         printf("Error: User-account.txt\n");
+        *check = 1;
         return;
     }
     while(!feof(fp)) {
