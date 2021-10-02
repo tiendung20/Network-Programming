@@ -2,8 +2,8 @@
 #define _courseschedule_h_
 typedef struct course_schedule
 {
-    char classId[10],subjectId[10],subjectName[25],week[20],roomId[10];
-    int start,end,week_day,apm;
+    char classId[10], subjectId[10], subjectName[25], week[20], roomId[10];
+    int start, end, week_day, apm;
 } Course_schedule;
 
 struct nodeCourse
@@ -13,5 +13,5 @@ struct nodeCourse
 };
 typedef struct nodeCourse NodeCourse;
 
-extern void readCourse(NodeCourse**,int*);
+extern void readCourse(NodeCourse **, int *);
 #endif

@@ -6,15 +6,18 @@
 #include "student_info.h"
 #include "course_schedule.h"
 
-Student studentLogin(NodeS *root, int *check) {
+Student studentLogin(NodeS *root, int *check)
+{
     Student st;
     NodeS *str = root;
     printf("Username: ");
-    scanf("%s",st.studentId);
+    scanf("%s", st.studentId);
     printf("Password: ");
-    scanf("%s",st.password);
-    while(str != NULL) {
-        if(strcmp(str->data.studentId,st.studentId) == 0 && strcmp(str->data.password,st.password) == 0) {
+    scanf("%s", st.password);
+    while (str != NULL)
+    {
+        if (strcmp(str->data.studentId, st.studentId) == 0 && strcmp(str->data.password, st.password) == 0)
+        {
             *check = 1;
             st = str->data;
             return st;
@@ -25,41 +28,56 @@ Student studentLogin(NodeS *root, int *check) {
     return st;
 }
 
-void signIn(NodeS *root, Student *st) {
+void signIn(NodeS *root, Student *st)
+{
     int c;
     do
     {
-        *st = studentLogin(root,&c);
-        if(c!=1) printf("Incorrect username or password!\n");
+        *st = studentLogin(root, &c);
+        if (c != 1)
+            printf("Incorrect username or password!\n");
     } while (c != 1);
-    if(c == 1) printf("Access!\n");
+    if (c == 1)
+        printf("Access!\n");
 }
 
-void printWD(Student st,NodeCourse *root,int day) {
+void printWD(Student st, NodeCourse *root, int day)
+{
     NodeCourse *str;
-    int c_day = 0,i,j,k,start,end;
-    char *week_day[] = {"Monday","Tuesday","Wednesday","Thursday","Friday"};
-    if(day > 6) {
-        printf("%-5s |%-15s |%-15s |%-15s |%-15s |%-15s\n","",week_day[0],week_day[1],week_day[2],week_day[3],week_day[4]);
+    int c_day = 0, i, j, k, start, end;
+    char *week_day[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    if (day > 6)
+    {
+        printf("%-5s |%-15s |%-15s |%-15s |%-15s |%-15s\n", "", week_day[0], week_day[1], week_day[2], week_day[3], week_day[4]);
         printf("\n");
-        for(i = 0; i < 12; i++) {
-            printf("%-5d ",i+1);
-            for(j=0; j<5; j++) {
+        for (i = 0; i < 12; i++)
+        {
+            printf("%-5d ", i + 1);
+            for (j = 0; j < 5; j++)
+            {
                 str = root;
                 c_day = 0;
-                while(str != NULL) {
-                    if(str->data.apm == 1) {
+                while (str != NULL)
+                {
+                    if (str->data.apm == 1)
+                    {
                         start = str->data.start;
                         end = str->data.end;
-                    } else if(str->data.apm == 2){
+                    }
+                    else if (str->data.apm == 2)
+                    {
                         start = str->data.start + 6;
                         end = str->data.end + 6;
                     }
-                    if((i+1) >= start && (i+1) <= end) {
-                        if((j+2) == str->data.week_day) {
-                            for(k=0; k<st.classNum; k++) {
-                                if(strcmp(st.classId[k],str->data.classId) == 0) {
-                                    printf("|%-15s ",str->data.roomId);
+                    if ((i + 1) >= start && (i + 1) <= end)
+                    {
+                        if ((j + 2) == str->data.week_day)
+                        {
+                            for (k = 0; k < st.classNum; k++)
+                            {
+                                if (strcmp(st.classId[k], str->data.classId) == 0)
+                                {
+                                    printf("|%-15s ", str->data.roomId);
                                     c_day = 1;
                                     break;
                                 }
@@ -68,55 +86,74 @@ void printWD(Student st,NodeCourse *root,int day) {
                     }
                     str = str->next;
                 }
-                if(c_day == 0) printf("|%-15s ","");
+                if (c_day == 0)
+                    printf("|%-15s ", "");
             }
             printf("\n");
         }
         return;
     }
-    char *apm[] = {"Morning","Afternoon"};
-    printf("%-10s |%-25s |%-15s |%-15s |%-11s |%-25s |%-10s\n","Code","Course","Week Day","AM/PM","Period","Week","Room");
+    char *apm[] = {"Morning", "Afternoon"};
+    printf("%-10s |%-25s |%-15s |%-15s |%-11s |%-25s |%-10s\n", "Code", "Course", "Week Day", "AM/PM", "Period", "Week", "Room");
     printf("\n");
-    for(i = 0; i<st.classNum; i++) {
+    for (i = 0; i < st.classNum; i++)
+    {
         str = root;
-        while(str != NULL) {
-            if(strcmp(st.classId[i],str->data.classId) == 0) {
-                if(day == str->data.week_day) {
-                    printf("%-10s |%-25s |%-15s |%-15s |%-d-%-9d |%-25s |%-10s\n",str->data.subjectId,str->data.subjectName,week_day[day-2],apm[str->data.apm-1],str->data.start,str->data.end,str->data.week,str->data.roomId);
+        while (str != NULL)
+        {
+            if (strcmp(st.classId[i], str->data.classId) == 0)
+            {
+                if (day == str->data.week_day)
+                {
+                    printf("%-10s |%-25s |%-15s |%-15s |%-d-%-9d |%-25s |%-10s\n", str->data.subjectId, str->data.subjectName, week_day[day - 2], apm[str->data.apm - 1], str->data.start, str->data.end, str->data.week, str->data.roomId);
                     c_day++;
                 }
             }
             str = str->next;
         }
     }
-    if(c_day == 0) printf("Empty\n");
+    if (c_day == 0)
+        printf("Empty\n");
 }
 
-void strLwr(char s[]) {
-    for(int i=0;i<strlen(s);i++) {
+void strLwr(char s[])
+{
+    for (int i = 0; i < strlen(s); i++)
+    {
         s[i] = tolower(s[i]);
     }
 }
 
-int sameSchedule(Student st, NodeCourse *root) {
-    int i,j;
-    NodeCourse *ptr,*str;
-    if(st.classNum < 2) return 0;
-    for(i=0; i<st.classNum; i++) {
+int sameSchedule(Student st, NodeCourse *root)
+{
+    int i, j;
+    NodeCourse *ptr, *str;
+    if (st.classNum < 2)
+        return 0;
+    for (i = 0; i < st.classNum; i++)
+    {
         ptr = root;
-        while(ptr != NULL) {
-            if(strcmp(st.classId[i],ptr->data.classId) == 0) break;
+        while (ptr != NULL)
+        {
+            if (strcmp(st.classId[i], ptr->data.classId) == 0)
+                break;
             ptr = ptr->next;
         }
-        for(j=i+1; j<st.classNum; j++) {
+        for (j = i + 1; j < st.classNum; j++)
+        {
             str = root;
-            while(str != NULL) {
-                if(strcmp(st.classId[j],str->data.classId) == 0) break;
+            while (str != NULL)
+            {
+                if (strcmp(st.classId[j], str->data.classId) == 0)
+                    break;
                 str = str->next;
             }
-            if(ptr->data.week_day == str->data.week_day) {
-                if(ptr->data.apm == str->data.apm) {
-                    if((ptr->data.start <= str->data.end && ptr->data.end >= str->data.start) || (str->data.start <= ptr->data.end && str->data.end >= ptr->data.start)) {
+            if (ptr->data.week_day == str->data.week_day)
+            {
+                if (ptr->data.apm == str->data.apm)
+                {
+                    if ((ptr->data.start <= str->data.end && ptr->data.end >= str->data.start) || (str->data.start <= ptr->data.end && str->data.end >= ptr->data.start))
+                    {
                         return 1;
                     }
                 }
@@ -126,51 +163,60 @@ int sameSchedule(Student st, NodeCourse *root) {
     return 0;
 }
 
-void sessionSt(NodeS *root, NodeCourse *rootC) {
-    int c,i,k,t;
-    char wd[15],*week_day[] = {"monday","tuesday","wednesday","thursday","friday","all"};
+void sessionSt(NodeS *root, NodeCourse *rootC)
+{
+    int c, i, k, t;
+    char wd[15], *week_day[] = {"monday", "tuesday", "wednesday", "thursday", "friday", "all"};
     Student st;
-    signIn(root,&st);
-    t = sameSchedule(st,rootC);
-    do{
-        printf("-----Account: %s-----\n",st.studentId);
+    signIn(root, &st);
+    t = sameSchedule(st, rootC);
+    do
+    {
+        printf("-----Account: %s-----\n", st.studentId);
         printf("1.Read week day\n2.Logout\n3.Exit\nChoose: ");
-        scanf("%d",&i);
+        scanf("%d", &i);
         switch (i)
         {
         case 1:
-            if(st.status == 0) {
+            if (st.status == 0)
+            {
                 printf("Not registered classId\n");
                 continue;
-            } else if(t == 1) {
+            }
+            else if (t == 1)
+            {
                 printf("The same schedule between subjects\n");
                 continue;
             }
             printf("Enter day: ");
-            scanf("%s",wd);
+            scanf("%s", wd);
             strLwr(wd);
-            for(c = 0; c < 6; c++) {
+            for (c = 0; c < 6; c++)
+            {
                 k = 0;
-                if(strcmp(wd,week_day[c]) == 0) {
+                if (strcmp(wd, week_day[c]) == 0)
+                {
                     k = c + 2;
                     break;
                 }
             }
-            if(k == 0) {
+            if (k == 0)
+            {
                 printf("Error: Day\n");
                 continue;
             }
-            printWD(st,rootC,k);
+            printWD(st, rootC, k);
             continue;
         case 2:
-            signIn(root,&st);
-            t = sameSchedule(st,rootC);
+            signIn(root, &st);
+            t = sameSchedule(st, rootC);
             c = -1;
             break;
         case 3:
             c = 0;
             break;
         }
-        if(c == -1) continue;
-    }while(i>0&&i<3);
+        if (c == -1)
+            continue;
+    } while (i > 0 && i < 3);
 }
