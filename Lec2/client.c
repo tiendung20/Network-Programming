@@ -46,8 +46,11 @@ int main(int argc, char **argv)
 
     do
     {
+        memset(recvline, 0, sizeof(recvline));
         printf("Enter day: ");
-        scanf("%s", sendline);
+        fgets(sendline, MAXLINE, stdin);
+        if (sendline[strlen(sendline)] == '\n')
+            sendline[strlen(sendline)] = '\0';
         send(sockfd, sendline, strlen(sendline), 0);
 
         if (recv(sockfd, recvline, MAXLINE, 0) == 0)
@@ -58,8 +61,7 @@ int main(int argc, char **argv)
         }
         printf("%s", "String received from the server: ");
         fputs(recvline, stdout);
-        fputs("\n", stdout);
-    } while (strlen(sendline) > 1);
+    } while (strlen(sendline) > 0);
 
     exit(0);
 }

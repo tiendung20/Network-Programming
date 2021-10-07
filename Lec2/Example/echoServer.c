@@ -44,6 +44,7 @@ int main(int argc, char **argv)
             printf("%s", "String received from and resent to the client:");
             puts(buf);
             send(connfd, buf, n, 0);
+            memset(buf, 0, sizeof(buf));
         }
 
         if (n < 0)
