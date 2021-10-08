@@ -37,6 +37,7 @@ int main(int argc, char **argv)
 
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
+        printf("%d\n",connfd);
         printf("%s\n", "Received request...");
 
         while ((n = recv(connfd, buf, MAXLINE, 0)) > 0)
