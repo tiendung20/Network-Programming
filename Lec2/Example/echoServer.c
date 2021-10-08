@@ -53,6 +53,7 @@ int main(int argc, char **argv)
             perror("Read error");
             exit(1);
         }
+        printf("---End--\n");
         close(connfd);
     }
     //close listening socket
