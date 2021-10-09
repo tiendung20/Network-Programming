@@ -242,7 +242,7 @@ void sessionSt(NodeS *root, NodeCourse *rootC, int connfd)
             t = sameSchedule(st, rootC);
             continue;
         default:
-            continue;
+            break;
         }
     }
 }

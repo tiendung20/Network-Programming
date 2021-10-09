@@ -134,6 +134,8 @@ void menuMain(int sockfd)
             signIn(sockfd);
             continue;
         default:
+            sprintf(sendline, "%d", 3);
+            send(sockfd, sendline, strlen(sendline), 0);
             break;
         }
     } while (i < 3);
