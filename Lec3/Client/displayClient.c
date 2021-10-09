@@ -23,9 +23,20 @@ void strLwr(char s[])
     }
 }
 
+int numAlpha(char str[])
+{
+    for (int i = 0; i < strlen(str); i++)
+    {
+        if (str[i] == '\t' || str[i] == ' ')
+            return 0;
+    }
+    return 1;
+}
+
 void signIn(int sockfd)
 {
     char strsend[50], s[20];
+    int check;
     do
     {
         memset(strsend, 0, sizeof(strsend));
@@ -33,22 +44,24 @@ void signIn(int sockfd)
         {
             printf("Username: ");
             fgets(s, 20, stdin);
+            check = numAlpha(s);
             if (s[strlen(s) - 1] == '\n')
                 s[strlen(s) - 1] = '\0';
-            if (strlen(s) < 1)
+            if (strlen(s) < 1 || check == 0)
                 printf("Please enter again!\n");
-        } while (strlen(s) < 1);
+        } while (strlen(s) < 1 || check == 0);
         strcat(strsend, s);
         strcat(strsend, "\t");
         do
         {
             printf("Password: ");
             fgets(s, 20, stdin);
+            check = numAlpha(s);
             if (s[strlen(s) - 1] == '\n')
                 s[strlen(s) - 1] = '\0';
-            if (strlen(s) < 1)
+            if (strlen(s) < 1 || check == 0)
                 printf("Please enter again!\n");
-        } while (strlen(s) < 1);
+        } while (strlen(s) < 1 || check == 0);
         strcat(strsend, s);
         send(sockfd, strsend, strlen(strsend), 0);
         memset(s, 0, sizeof(s));
