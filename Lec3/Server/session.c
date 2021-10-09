@@ -45,7 +45,7 @@ Student studentLogin(NodeS *root, int *check, int connfd)
     return st;
 }
 
-void signIn(NodeS *root, Student *st, int connfd)
+int signIn(NodeS *root, Student *st, int connfd)
 {
     int c;
     char c_send[5];
@@ -57,11 +57,15 @@ void signIn(NodeS *root, Student *st, int connfd)
         {
             send(connfd, c_send, strlen(c_send), 0);
         }
-    } while (c != 1);
+    } while (c == 0);
     if (c == 1)
     {
         send(connfd, c_send, strlen(c_send), 0);
     }
+    if (c == -1)
+        return 0;
+    else
+        return 1;
 }
 
 void printWD(Student st, NodeCourse *root, int day, int connfd)
@@ -192,10 +196,12 @@ int sameSchedule(Student st, NodeCourse *root)
 
 void sessionSt(NodeS *root, NodeCourse *rootC, int connfd)
 {
-    int t;
+    int t, i;
     Student st;
     char buf[MAXLINE], sendbuf[MAXLINE];
-    signIn(root, &st, connfd);
+    i = signIn(root, &st, connfd);
+    if (i == 0)
+        return;
     t = sameSchedule(st, rootC);
 
     for (;;)
@@ -243,7 +249,9 @@ void sessionSt(NodeS *root, NodeCourse *rootC, int connfd)
             printWD(st, rootC, atoi(buf), connfd);
             continue;
         case 2:
-            signIn(root, &st, connfd);
+            i = signIn(root, &st, connfd);
+            if (i == 0)
+                break;
             t = sameSchedule(st, rootC);
             continue;
         default:
