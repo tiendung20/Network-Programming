@@ -20,6 +20,11 @@ Student studentLogin(NodeS *root, int *check, int connfd)
         strcpy(st.studentId, strtok(buf, "\t"));
         strcpy(st.password, strtok(NULL, "\t"));
     }
+    if (n == 0)
+    {
+        *check = -1;
+        return st;
+    }
     if (n < 0)
     {
         perror("Read error");
@@ -48,7 +53,7 @@ void signIn(NodeS *root, Student *st, int connfd)
     {
         *st = studentLogin(root, &c, connfd);
         sprintf(c_send, "%d", c);
-        if (c != 1)
+        if (c == 0)
         {
             send(connfd, c_send, strlen(c_send), 0);
         }
