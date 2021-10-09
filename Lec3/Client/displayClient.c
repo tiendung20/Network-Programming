@@ -95,7 +95,6 @@ void menuMain(int sockfd)
             if (atoi(recvline) != 1)
             {
                 printf("%s", recvline);
-                send(sockfd, "sendline", strlen("sendline"), 0);
                 continue;
             }
             printf("Enter day: ");
