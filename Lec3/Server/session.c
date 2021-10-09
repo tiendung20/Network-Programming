@@ -206,11 +206,13 @@ void sessionSt(NodeS *root, NodeCourse *rootC, int connfd)
 
     for (;;)
     {
-        if (recv(connfd, buf, MAXLINE, 0) < 0)
+        if ((i = recv(connfd, buf, MAXLINE, 0)) < 0)
         {
             perror("Read error");
             exit(1);
         }
+        if (i == 0)
+            return;
         send(connfd, st.studentId, strlen(st.studentId), 0);
         memset(buf, 0, sizeof(buf));
         if (recv(connfd, buf, MAXLINE, 0) < 0)
@@ -251,7 +253,7 @@ void sessionSt(NodeS *root, NodeCourse *rootC, int connfd)
         case 2:
             i = signIn(root, &st, connfd);
             if (i == 0)
-                break;
+                return;
             t = sameSchedule(st, rootC);
             continue;
         default:
