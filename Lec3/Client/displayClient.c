@@ -144,6 +144,7 @@ void menuMain(int sockfd)
             send(sockfd, sendline, strlen(sendline), 0);
             clean_stdin();
             signIn(sockfd);
+            system("clear");
             continue;
         default:
             sprintf(sendline, "%d", 3);

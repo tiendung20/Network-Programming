@@ -37,5 +37,7 @@ int main(int argc, char **argv)
 
     menuMain(sockfd);
 
+    system("clear");
+
     exit(0);
 }
