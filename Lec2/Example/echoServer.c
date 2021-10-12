@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include <string.h>
 
 #define MAXLINE 4096   /*max text line length*/
@@ -38,6 +39,7 @@ int main(int argc, char **argv)
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
         printf("%s\n", "Received request...");
+        printf("%s\t%d\n",inet_ntoa(cliaddr.sin_addr),ntohs(cliaddr.sin_port));
 
         while ((n = recv(connfd, buf, MAXLINE, 0)) > 0)
         {

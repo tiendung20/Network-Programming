@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include "student_info.h"
 #include "course_schedule.h"
@@ -42,6 +43,7 @@ int main(int argc, char **argv)
         clilen = sizeof(cliaddr);
         connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
         printf("%s\n", "Received request...");
+        printf("Client's IP: %-20s - Port: %d\n", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
 
         sessionSt(root, rootC, connfd);
 
