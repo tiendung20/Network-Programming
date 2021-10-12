@@ -142,9 +142,9 @@ void menuMain(int sockfd)
         case 2:
             sprintf(sendline, "%d", 2);
             send(sockfd, sendline, strlen(sendline), 0);
+            system("clear");
             clean_stdin();
             signIn(sockfd);
-            system("clear");
             continue;
         default:
             sprintf(sendline, "%d", 3);
