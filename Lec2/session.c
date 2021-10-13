@@ -220,7 +220,7 @@ void sessionSt(NodeS *root, NodeCourse *rootC, int sockfd)
                 printf("Error: Day\n");
                 continue;
             }
-            printWD(st, rootC, k,sockfd);
+            printWD(st, rootC, k, sockfd);
             continue;
         case 2:
             signIn(root, &st);

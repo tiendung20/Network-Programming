@@ -47,7 +47,7 @@ int main(int argc, char **argv)
         exit(3);
     }
 
-        sessionSt(root, rootC, sockfd);
+    sessionSt(root, rootC, sockfd);
 
     exit(0);
 }
