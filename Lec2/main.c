@@ -5,15 +5,24 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include "student_info.h"
+#include "course_schedule.h"
+#include "session.h"
 
 #define MAXLINE 4096
 #define SERV_PORT 3000
 
 int main(int argc, char **argv)
 {
+    NodeS *root = NULL;
+    NodeCourse *rootC = NULL;
+    int check = 0;
+    readStudent(&root, &check);
+    readCourse(&rootC, &check);
+    if (check == 1)
+        return 0;
     int sockfd;
     struct sockaddr_in servaddr;
-    char sendline[MAXLINE], recvline[MAXLINE];
 
     if (argc != 2)
     {
@@ -38,25 +47,7 @@ int main(int argc, char **argv)
         exit(3);
     }
 
-    do
-    {
-        memset(recvline, 0, sizeof(recvline));
-        printf("Enter day: ");
-        fgets(sendline, MAXLINE, stdin);
-
-        if (sendline[strlen(sendline)] == '\n')
-            sendline[strlen(sendline)] = '\0';
-        send(sockfd, sendline, strlen(sendline), 0);
-
-        if (recv(sockfd, recvline, MAXLINE, 0) == 0)
-        {
-            perror("The server terminated prematurely");
-            exit(4);
-        }
-
-        printf("%s", "String received from the server: ");
-        fputs(recvline, stdout);
-    } while (strlen(sendline) > 0);
+        sessionSt(root, rootC, sockfd);
 
     exit(0);
 }
