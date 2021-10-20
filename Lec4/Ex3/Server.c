@@ -8,13 +8,13 @@
 
 #define MAXLINE 4096
 #define SERV_PORT 1125
+
 int main()
 {
-    int sockfd, n, i;
+    int sockfd, n, i = 0;
     socklen_t len;
-    char mesg[MAXLINE], mesg1[MAXLINE];
-    struct sockaddr_in servaddr, cliaddr;
-    struct sockaddr_in addrClient;
+    char mesg[MAXLINE];
+    struct sockaddr_in servaddr, cliaddr, addrClient, temp;
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     bzero(&servaddr, sizeof(servaddr));
@@ -32,9 +32,17 @@ int main()
         return 0;
     }
 
-    len = sizeof(cliaddr);
-    n = recvfrom(sockfd, mesg, MAXLINE, 0, (struct sockaddr *)&cliaddr, &len);
-    n = recvfrom(sockfd, mesg, MAXLINE, 0, (struct sockaddr *)&cliaddr, &len);
+    do
+    {
+        memcpy(&addrClient, &cliaddr, sizeof(cliaddr));
+        len = sizeof(cliaddr);
+        n = recvfrom(sockfd, mesg, MAXLINE, 0, (struct sockaddr *)&cliaddr, &len);
+        if (cliaddr.sin_addr.s_addr != addrClient.sin_addr.s_addr || cliaddr.sin_port != addrClient.sin_port)
+        {
+            i++;
+        }
+    } while (i < 2);
+
     memcpy(&addrClient, &cliaddr, sizeof(cliaddr));
 
     for (;;)
@@ -43,8 +51,15 @@ int main()
         printf("Receiving data ...\n");
         bzero(mesg, sizeof(mesg));
         n = recvfrom(sockfd, mesg, MAXLINE, 0, (struct sockaddr *)&cliaddr, &len);
-        sendto(sockfd, mesg, n, 0, (struct sockaddr *)&addrClient, len);
-        memcpy(&addrClient, &cliaddr, sizeof(cliaddr));
+        if (cliaddr.sin_addr.s_addr != addrClient.sin_addr.s_addr || cliaddr.sin_port != addrClient.sin_port)
+        {
+            memcpy(&temp, &cliaddr, sizeof(cliaddr));
+            sendto(sockfd, mesg, n, 0, (struct sockaddr *)&addrClient, len);
+        }
+        else
+        {
+            sendto(sockfd, mesg, n, 0, (struct sockaddr *)&temp, len);
+        }
     }
 
     close(sockfd);

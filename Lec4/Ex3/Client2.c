@@ -21,26 +21,29 @@ int main()
     servaddr.sin_port = htons(SERV_PORT);
     servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-    printf("creat socket\n");
     sendto(sockfd, sendline, strlen(sendline), 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
+    printf("Waiting...\n");
     bzero(recvline, sizeof(recvline));
     n = recvfrom(sockfd, recvline, MAXLINE, 0, (struct sockaddr *)&from_socket, &addrlen);
     recvline[n] = 0;
-    printf("From Server: %s %d %s\n", inet_ntoa(from_socket.sin_addr), htons(from_socket.sin_port), recvline);
+    printf("Message received: %s\n", recvline);
 
-    while (fgets(sendline, MAXLINE, stdin) != NULL)
+    while (1)
     {
+        printf("Message sent: ");
+        if (fgets(sendline, MAXLINE, stdin) == NULL)
+            break;
         if (sendline[strlen(sendline) - 1] == '\n')
         {
             sendline[strlen(sendline) - 1] = '\0';
         }
-        printf("To Server: %s\n", sendline);
         sendto(sockfd, sendline, strlen(sendline), 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
+        printf("Waiting...\n");
         bzero(recvline, sizeof(recvline));
         n = recvfrom(sockfd, recvline, MAXLINE, 0, (struct sockaddr *)&from_socket, &addrlen);
         recvline[n] = 0;
-        printf("From Server: %s %d %s\n", inet_ntoa(from_socket.sin_addr), htons(from_socket.sin_port), recvline);
+        printf("Message received: %s\n", recvline);
     }
 
     return 0;
