@@ -9,7 +9,7 @@
 #define MAXLINE 4096
 #define SERV_PORT 1125
 
-int main(int argc, char **argv)
+int main()
 {
     int sockfd, n, from_len;
     struct sockaddr_in servaddr, from_socket;

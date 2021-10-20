@@ -7,48 +7,41 @@
 #include <arpa/inet.h>
 
 #define MAXLINE 4096
+#define SERV_PORT 1125
 
-int main(int argc, char **argv)
+int main()
 {
-    int sockfd, n, from_len, SERV_PORT;
+    int sockfd, n, from_len;
     struct sockaddr_in servaddr, from_socket;
     socklen_t addrlen = sizeof(from_socket);
     char sendline[MAXLINE], recvline[MAXLINE + 1];
 
-    if (argc != 3)
-    {
-        perror("Usage: UDPClient <IP address of the server> <Port>");
-        return 0;
-    }
-
-    SERV_PORT = (atoi(argv[2]) > 0) ? atoi(argv[2]) : 1255;
-
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(SERV_PORT);
-    servaddr.sin_addr.s_addr = inet_addr(argv[1]);
+    servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     printf("creat socket\n");
-
     sendto(sockfd, sendline, strlen(sendline), 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
+
+    bzero(recvline, sizeof(recvline));
     n = recvfrom(sockfd, recvline, MAXLINE, 0, (struct sockaddr *)&from_socket, &addrlen);
-    do
+    recvline[n] = 0;
+    printf("From Server: %s %d %s\n", inet_ntoa(from_socket.sin_addr), htons(from_socket.sin_port), recvline);
+
+    while (fgets(sendline, MAXLINE, stdin) != NULL)
     {
-        printf("Send message: ");
-        fgets(sendline, MAXLINE, stdin);
         if (sendline[strlen(sendline) - 1] == '\n')
         {
             sendline[strlen(sendline) - 1] = '\0';
         }
+        printf("To Server: %s\n", sendline);
         sendto(sockfd, sendline, strlen(sendline), 0, (struct sockaddr *)&servaddr, sizeof(servaddr));
-        do
-        {
-            bzero(recvline, sizeof(recvline));
-            n = recvfrom(sockfd, recvline, MAXLINE, 0, (struct sockaddr *)&from_socket, &addrlen);
-        } while (servaddr.sin_addr.s_addr != from_socket.sin_addr.s_addr || servaddr.sin_port != from_socket.sin_port);
-        recvline[n] = '\0';
-        printf("Message received: %s\n", recvline);
-    } while (strlen(recvline) < 0);
+        bzero(recvline, sizeof(recvline));
+        n = recvfrom(sockfd, recvline, MAXLINE, 0, (struct sockaddr *)&from_socket, &addrlen);
+        recvline[n] = 0;
+        printf("From Server: %s %d %s\n", inet_ntoa(from_socket.sin_addr), htons(from_socket.sin_port), recvline);
+    }
 
     return 0;
 }
