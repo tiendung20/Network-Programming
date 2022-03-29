@@ -18,9 +18,9 @@ int main(int argc, char **argv)
 
     //basic check of the arguments
     //additional checks can be inserted
-    if (argc != 2)
+    if (argc != 3)
     {
-        perror("Usage: TCPClient <IP address of the server>");
+        perror("Usage: TCPClient <IP address of the server> Address");
         exit(1);
     }
 
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
         perror("Problem in connecting to the server");
         exit(3);
     }
-    FILE *fp = fopen("qldt.zip", "rb");
+    FILE *fp = fopen(argv[2], "rb");
     if (fp == NULL)
     {
         printf("ERROR\n");
