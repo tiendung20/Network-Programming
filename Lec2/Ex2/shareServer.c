@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <libgen.h>
 
 #define MAXLINE 4096
 #define SERV_PORT 3000
@@ -19,10 +20,10 @@ int main(int argc, char **argv)
     char buf[MAXLINE];
     struct sockaddr_in cliaddr, servaddr;
 
-    //creation of the socket
+    // creation of the socket
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
-    //preparation of the socket address
+    // preparation of the socket address
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servaddr.sin_port = htons(SERV_PORT);
@@ -40,7 +41,18 @@ int main(int argc, char **argv)
         connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
         printf("%s\n", "Received request...");
         printf("%s\t%d\n", inet_ntoa(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
-        FILE *fp = fopen("file.zip", "wb");
+        memset(buf, 0, sizeof(buf));
+        if (recv(connfd, buf, MAXLINE, 0) == 0)
+        {
+            // error: server terminated prematurely
+            perror("The server terminated prematurely");
+            exit(4);
+        }
+        send(connfd, buf, strlen(buf), 0);
+        char filename[MAXLINE];
+        strcpy(filename, "file");
+        strcat(filename, strchr(buf, '.'));
+        FILE *fp = fopen(filename, "wb");
         if (fp == NULL)
         {
             printf("ERROR\n");
@@ -65,7 +77,7 @@ int main(int argc, char **argv)
         fclose(fp);
         close(connfd);
     }
-    //close listening socket
+    // close listening socket
     close(listenfd);
 
     return 0;
