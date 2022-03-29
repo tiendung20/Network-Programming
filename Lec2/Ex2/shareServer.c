@@ -49,9 +49,7 @@ int main(int argc, char **argv)
             exit(4);
         }
         send(connfd, buf, strlen(buf), 0);
-        char filename[MAXLINE];
-        strcpy(filename, "file");
-        strcat(filename, strchr(buf, '.'));
+        char *filename = basename(buf);
         FILE *fp = fopen(filename, "wb");
         if (fp == NULL)
         {
